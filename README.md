@@ -1,4 +1,3 @@
-```
 # Elasticsearch Deployment Guide
 
 This guide provides instructions on how to deploy and configure an Elasticsearch instance on AWS using Terraform and Ansible. By following this guide, you will create AWS infrastructure with Terraform and configure Elasticsearch on it using Ansible.
@@ -84,4 +83,3 @@ https://<IP>:9200
 ```
 
 Replace `<IP>` with your instance's IP address. Ensure you have configured SSL certificates to securely access Elasticsearch over HTTPS.
-```
