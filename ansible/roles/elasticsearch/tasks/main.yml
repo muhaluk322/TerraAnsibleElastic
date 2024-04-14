@@ -1,11 +1,5 @@
 ---
-- name: Install Elasticsearch on a single-node
-  hosts: elasticsearch
-  become: yes
-  vars_files:
-    - vars.yml
 
-  tasks:
   - name: Import Elasticsearch GPG Key
     ansible.builtin.apt_key:
       url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
@@ -65,9 +59,3 @@
       validate_certs: no
     ignore_errors: yes
 
-  handlers:
-
-  - name: Restart elasticsearch
-    ansible.builtin.service:
-      name: elasticsearch
-      state: restarted
