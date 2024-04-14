@@ -4,7 +4,7 @@
   hosts: elasticsearch
   become: yes
   vars_files:
-    -  globalvars/vars.yml
+    -  global_vars/vars.yml
 
   roles:
     - role: elasticsearch
