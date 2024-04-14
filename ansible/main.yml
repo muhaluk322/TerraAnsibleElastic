@@ -1,8 +1,11 @@
 ---
 
-- name: Install Elasticsearch on a single-node
+- name: Install ELK on a single-node
   hosts: elasticsearch
   become: yes
+  vars_files:
+    -  globalvars/vars.yml
 
   roles:
     - role: elasticsearch
+    - role: kibana

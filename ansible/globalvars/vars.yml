@@ -1,0 +1,11 @@
+---
+
+# Ansible Roles Variables
+
+# ELK ver
+elk_version: "8.10.1"
+
+# Elasticsearch
+es_heap_size: "1g"
+elastic_pass: "elastic"
+

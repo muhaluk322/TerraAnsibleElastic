@@ -1,0 +1,23 @@
+---
+- name: Import Elasticsearch GPG Key
+  ansible.builtin.apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: Add Elasticsearch repository
+  ansible.builtin.apt_repository:
+    repo: "deb https://artifacts.elastic.co/packages/{{ elk_version[:1] }}.x/apt stable main"
+    state: present
+    update_cache: yes
+
+- name: Install Elasticsearch
+  ansible.builtin.apt:
+    name: elasticsearch={{ elk_version }}
+    state: present
+    update_cache: yes
+
+- name: Enable and Start Elasticsearch Service
+  ansible.builtin.service:
+    name: elasticsearch
+    enabled: yes
+    state: started

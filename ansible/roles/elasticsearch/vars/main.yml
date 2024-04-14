@@ -1,5 +1,0 @@
----
-
-es_version: "8.10.0"
-es_heap_size: "1g"
-elastic_pass: "elastic"

@@ -1,0 +1,36 @@
+---
+- name: Set custom JVM heap size
+  ansible.builtin.copy:
+    dest: "/etc/elasticsearch/jvm.options.d/custom_heap_size.options"
+    content: |
+      -Xms{{ es_heap_size }}
+      -Xmx{{ es_heap_size }}
+    owner: root
+    group: elasticsearch
+    mode: '0644'
+
+- name: Reset Elasticsearch password
+  command: /usr/share/elasticsearch/bin/elasticsearch-reset-password --batch -u elastic
+  register: reset_password_output
+  no_log: True
+
+- name: Extract password from stdout
+  set_fact:
+    elastic_temp_pass: "{{ reset_password_output.stdout | regex_search('New value: (.+)', '\\1') | first }}"
+  no_log: True
+
+- name: Set password for 'elastic' user
+  uri:
+    url: "https://localhost:9200/_security/user/elastic/_password"
+    method: POST
+    body_format: json
+    body: '{"password": "{{ elastic_pass }}"}'
+    headers:
+      Content-Type: "application/json"
+    user: "elastic"
+    password: "{{ elastic_temp_pass }}"
+    force_basic_auth: yes
+    validate_certs: no
+  ignore_errors: yes
+  notify:
+    - Restart elasticsearch
