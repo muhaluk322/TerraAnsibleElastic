@@ -1,85 +1,93 @@
-# Elasticsearch Deployment Guide
+```
+# Elasticsearch Deployment Guide on AWS
 
-This guide provides instructions on how to deploy and configure an Elasticsearch instance on AWS using Terraform and Ansible. By following this guide, you will create AWS infrastructure with Terraform and configure Elasticsearch on it using Ansible.
+This guide provides a step-by-step process to deploy and configure an Elasticsearch instance on AWS using Terraform for infrastructure setup and Ansible for software configuration. 
 
 ## Prerequisites
 
-Before starting, you need to have the following tools installed on your machine:
+Ensure you have the following installed on your local machine:
 
 - **Terraform**: [Download and install Terraform](https://www.terraform.io/downloads.html)
 - **Ansible**: [Installation guide for Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+- AWS Access Key ID and AWS Secret Access Key
 
-Additionally, you will need:
+## Configuration Overview
 
-- AWS Access Key ID
-- AWS Secret Access Key
+The deployment process is divided into two main parts: setting up the infrastructure using Terraform and configuring Elasticsearch using Ansible.
 
-These credentials are necessary for Terraform to provision resources on AWS.
+### Part 1: Infrastructure Setup with Terraform
 
-## Configuration Steps
+#### Step 1: Set Up AWS Credentials
 
-### 1. Set Up AWS Credentials
-
-It's recommended to use environment variables for AWS credentials to enhance security. Set your credentials as follows:
+Set your AWS credentials as environment variables for enhanced security:
 
 ```bash
 export AWS_ACCESS_KEY_ID=your-access-key-id
 export AWS_SECRET_ACCESS_KEY=your-secret-access-key
 ```
 
-Replace `your-access-key-id` and `your-secret-access-key` with your actual AWS credentials.
+#### Step 2: Initialize and Apply Terraform
 
-### 2. Terraform Initialization and Application
-
-Navigate to the Terraform directory and initialize Terraform:
+Navigate to your Terraform directory and run the following commands:
 
 ```bash
 cd terraform
 terraform init
-```
-
-Apply the Terraform configuration:
-
-```bash
 terraform apply
 ```
 
-Type `yes` when prompted to apply the changes.
+Confirm the changes by typing `yes` when prompted.
 
-### 3. Configure SSH Key
+#### Step 3: Generate SSH Key
 
-Generate an SSH key file from Terraform output:
+After Terraform execution, generate an SSH key for Ansible:
 
 ```bash
-terraform output -raw private_key > ../ssh-key.pem
-chmod 400 ../ssh-key.pem
+terraform output -raw private_key > ../ansible/ssh-key.pem
+chmod 400 ../ansible/ssh-key.pem
 ```
 
-### 4. Update Ansible Inventory
+### Part 2: Elasticsearch Configuration with Ansible
 
-Update the `inventory.ini` file with the IP address of your new instance:
+#### Step 4: Update Ansible Inventory
+
+Move to the Ansible directory and update the `inventory.ini` file:
 
 ```ini
 [elasticsearch]
 <IP> ansible_ssh_user=ubuntu ansible_ssh_private_key_file=./ssh-key.pem
 ```
 
-Replace `<IP>` with your instance's IP address.
+Replace `<IP>` with the public IP address of your AWS instance.
 
-### 5. Execute Ansible Playbook
+#### Step 5: Execute Ansible Playbook
 
-Run the Ansible playbook to configure Elasticsearch:
+Configure Elasticsearch by running the Ansible playbook:
 
 ```bash
-ansible-playbook -i inventory.ini elk-install.yml
+ansible-playbook -i inventory.ini main.yml
 ```
 
-### 6. Verify Elasticsearch Installation
+#### Step 6: Verify Elasticsearch and Kibana Installations
 
-Access your Elasticsearch instance to confirm it's running:
+Verify that both Elasticsearch and Kibana are running by accessing the following URLs:
 
 ```plaintext
-https://<IP>:9200
+Elasticsearch: https://<IP>:9200
+Kibana: http://<IP>:5601
 ```
 
-Replace `<IP>` with your instance's IP address. Ensure you have configured SSL certificates to securely access Elasticsearch over HTTPS.
+Credentials for Elasticsearch and Kibana:
+
+```plaintext
+Username: elastic
+Password: elastic
+```
+
+Replace `<IP>` with your instance's IP address. Ensure SSL is configured for Elasticsearch.
+
+## Conclusion
+
+By following these steps, you should have a fully functional Elasticsearch instance running on AWS, configured securely and ready for use.
+```
+
