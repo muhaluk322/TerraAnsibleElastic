@@ -1,4 +1,3 @@
-```
 # Elasticsearch Deployment Guide on AWS
 
 This guide provides a step-by-step process to deploy and configure an Elasticsearch instance on AWS using Terraform for infrastructure setup and Ansible for software configuration. 
@@ -85,9 +84,4 @@ Password: elastic
 ```
 
 Replace `<IP>` with your instance's IP address. Ensure SSL is configured for Elasticsearch.
-
-## Conclusion
-
-By following these steps, you should have a fully functional Elasticsearch instance running on AWS, configured securely and ready for use.
-```
-
+By following these steps, you should have a fully functional Elasticsearch instance running on AWS, configured and ready for use.
