@@ -28,7 +28,7 @@ This README provides an overview of the Terraform project structure, which is de
 - `main.tf`: Main Terraform file that calls the modules and configures the provider.
 - `variables.tf`: Root-level variables file that defines common variables across modules.
 - `outputs.tf`: Root-level outputs file that can be used to display information post-deployment.
-- `terraform.tfstate` and `terraform.tfstate.backup`: Terraform state files that track the state of managed resources (should be managed carefully and not edited manually).
+- `terraform.tfstate`: Terraform state files that track the state of managed resources (should be managed carefully and not edited manually).
 - `README.md`: This file, explaining project setup and structure.
 
 ## Modules Description
