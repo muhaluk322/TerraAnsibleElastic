@@ -1,38 +1,41 @@
-Role Name
-=========
+# Role: Kibana
 
-A brief description of the role goes here.
+## Overview
+This Ansible role automates the deployment and basic configuration of Kibana on Ubuntu systems as part of an ELK stack. The role includes tasks for adding the necessary repositories, installing the software, configuring Kibana through its YAML file, and ensuring the service is properly managed.
 
-Requirements
-------------
+## Requirements
+- **Ansible Version**: 2.9 or later
+- **Operating Systems**: Ubuntu 18.04 or newer
+- **Internet Access**: Required to fetch packages from the official repositories
+- **Additional Modules**: None outside of what Ansible provides
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+## Dependencies
+This role does not require any other roles from Ansible Galaxy. If integrating with other roles such as Elasticsearch or Logstash, ensure compatibility in terms of variable names and configurations.
 
-Role Variables
---------------
+## Role Variables
+- `elk_version`: Defines the version of Kibana to install (e.g., "8.10.1"). This variable impacts the repository URL and the installed version.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Variables should be set within `ansible/global_vars/vars.yml`.
 
-Dependencies
-------------
+## Role Structure
+The role includes several components organized into different directories:
+- `files/`: Contains the main Kibana configuration file `kibana.yml`.
+- `handlers/`: Includes handler scripts, such as restarting the Kibana service.
+- `tasks/`: Contains task files such as `kibana_install.yml` for installation and `kibana_configure.yml` for configuration.
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+## Role Tasks
 
-Example Playbook
-----------------
+### `kibana_install.yml`
+- **Import GPG Key**: Ensures the Kibana GPG key is added to verify package authenticity.
+- **Add Repository**: Configures the package manager to use the official Kibana repository.
+- **Install Kibana**: Installs Kibana and updates the package cache.
+- **Enable and Start Kibana Service**: Ensures Kibana starts on boot and is running.
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+### `kibana_configure.yml`
+- **Configure kibana.yml**: Copies the main configuration file to the target system.
+- **Run Elasticsearch Token Command**: Generates an enrollment token using Elasticsearch's utilities.
+- **Extract Token from Response**: Captures the generated token from the command output.
+- **Run Kibana Enrollment Token Command**: Uses the token to complete Kibana's setup process.
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+## Handlers
+- **Restart Kibana**: This handler restarts the Kibana service whenever it's needed after configuration changes.

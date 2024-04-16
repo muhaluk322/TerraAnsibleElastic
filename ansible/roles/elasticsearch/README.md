@@ -1,38 +1,41 @@
-Role Name
-=========
+# Role: Elasticsearch
 
-A brief description of the role goes here.
+## Overview
+This Ansible role automates the deployment and basic configuration of Elasticsearch on Ubuntu systems. It is specifically tailored for an ELK stack setup and includes tasks such as setting up the repository, installing the software, configuring JVM settings, managing user passwords, and handling service restarts.
 
-Requirements
-------------
+## Requirements
+- **Ansible Version**: 2.9 or later
+- **Operating Systems**: Ubuntu 18.04 or newer
+- **Internet Access**: Required to fetch packages from the Elasticsearch repository
+- **Additional Modules**: None outside of what Ansible provides
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+## Dependencies
+This role does not depend on any other roles from Ansible Galaxy. Ensure compatibility in terms of variable names and configurations if integrating with other roles for ELK Stack components like Logstash or Kibana.
 
-Role Variables
---------------
+## Role Variables
+- `elk_version`: Version of Elasticsearch to install (e.g., "8.10.1"). Affects the repository URL and package version.
+- `es_heap_size`: JVM heap size for Elasticsearch, typically "1g".
+- `elastic_pass`: Password for the default Elasticsearch user 'elastic'.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Variables can be configured within `ansible/global_vars/vars.yml`.
 
-Dependencies
-------------
+## Role Structure
+The role includes several components organized into different directories:
+- `handlers/`: Includes handler scripts, such as restarting the Elasticsearch service.
+- `tasks/`: Contains task files such as `elastic_install.yml` for installation and `elastic_configure.yml` for configuration.
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+## Role Tasks
 
-Example Playbook
-----------------
+### `elastic_install.yml`
+- **Import GPG Key**: Ensures the Elasticsearch GPG key is added for package authenticity.
+- **Add Repository**: Adds the official Elasticsearch apt repository.
+- **Install Elasticsearch**: Installs Elasticsearch and updates the package cache.
+- **Manage Service**: Ensures the Elasticsearch service starts on boot and is actively running.
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+### `elastic_configure.yml`
+- **Set JVM Heap Size**: Sets the JVM heap size in a custom configuration file.
+- **Reset Elasticsearch Password**: Resets and captures the password for the 'elastic' user.
+- **Set Password for 'elastic' User**: Updates the password for the 'elastic' user using the Elasticsearch API.
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+## Handlers
+- **Restart Elasticsearch**: Restarts the Elasticsearch service as required by configuration changes or updates.
