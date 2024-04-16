@@ -8,7 +8,7 @@ Ensure you have the following installed on your local machine:
 
 - **Terraform**: [Download and install Terraform](https://www.terraform.io/downloads.html)
 - **Ansible**: [Installation guide for Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
-- AWS Access Key ID and AWS Secret Access Key
+- **AWS Access Key ID** and **AWS Secret Access Key**
 
 ## Configuration Overview
 
