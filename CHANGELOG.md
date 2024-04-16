@@ -4,4 +4,8 @@
 - Initial configuration of Elasticsearch on an AWS instance.
 
 ## [v1.1.0] - 2024-04-14
-- Add Ansible Roles
+- Add Ansible Roles.
+
+## [v2.0.0] - 2024-04-16
+- Elasticsearch and Kibana configuration. 
+- Updated documentation.
